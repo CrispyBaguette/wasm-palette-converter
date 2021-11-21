@@ -6,7 +6,7 @@
   // Setup Wasm stuff
   const go = new Go();
   vm = await WebAssembly.instantiateStreaming(
-    fetch("/main.wasm"),
+    fetch("./main.wasm"),
     go.importObject
   );
   go.run(vm.instance);
