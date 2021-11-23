@@ -1,8 +1,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <script src="./wasm_exec.js"></script>
-    <script async src="./main.js"></script>
+    <script type="module" src="./wasm_exec.js"></script>
+    <script type="module" src="./main.js"></script>
     <style>
       @media (prefers-color-scheme: dark) {
         body {
@@ -57,8 +57,19 @@
         algorithm.
       </p>
       <p>
-        Performance isn't great, as Go+Wasm only runs on a single thread. The
-        Wasm call also blocks the rendering (that would be fixable, though).
+        Running in the browser with Wasm causes a bit of a performance penalty.
+        Multithreading is not available (not that it matters much since
+        Floyd-Steinberg is single-threaded), and sending data back and forth
+        between JS and Wasm can take a little while.
+      </p>
+      <p>
+        I've re-used code from
+        <a
+          href="https://www.sitepen.com/blog/using-webassembly-with-web-workers"
+          >this article</a
+        >
+        to make the Wasm code run in a web worker, with some adaptations for Go
+        oddities.
       </p>
       <p>
         If you're into that sort of thing, source code is available on
@@ -68,11 +79,13 @@
       </p>
       <form>
         <input type="file" id="source-image" accept="image/png, image/jpeg" />
-        <button id="go-btn" type="button">Go</button>
+        <button id="go-btn" type="button" disabled>Go</button>
       </form>
-      <div class="container">
-        <img id="output" />
-      </div>
+      <a id="output-wrapper" download="output.png">
+        <div class="container">
+          <img id="output" />
+        </div>
+      </a>
     </article>
   </body>
 </html>
