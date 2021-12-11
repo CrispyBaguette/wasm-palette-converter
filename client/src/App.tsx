@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./App.css";
 
 function App() {
   const [imageSrc, setImageSrc] = React.useState("");
-  const [displayOutput, setDisplayOutput] = React.useState(false);
   const fileInput = React.useRef<HTMLInputElement>(null);
 
   const handleClick = async () => {
@@ -12,7 +11,6 @@ function App() {
     }
     const workerProxy: any = await wasmWorker("main.wasm");
 
-    setDisplayOutput(false);
     setImageSrc("");
 
     // Check if a file was selected
@@ -28,7 +26,6 @@ function App() {
         const ditheredImage = await workerProxy.DitherNord(imageData);
         const outputValue = `data:image/png;base64,${ditheredImage}`;
         setImageSrc(outputValue);
-        setDisplayOutput(true);
       }
     };
   };
@@ -50,7 +47,7 @@ function App() {
             id="output"
             alt="dithering output"
             src={imageSrc}
-            style={{ display: displayOutput ? "block" : "none" }}
+            style={{ display: imageSrc !== "" ? "block" : "none" }}
           />
         </div>
       </a>
