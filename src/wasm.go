@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	b64 "encoding/base64"
 	"encoding/hex"
 	"image"
 	"image/color"
@@ -69,7 +68,7 @@ func decodeImage(imageData []byte) (image.Image, error) {
 }
 
 // DittherNord returns a Promise that takes a UintArray containing a Jpeg or png image,
-// and resolves to a string containing a base64 encoded png image.
+// and resolves to a UintArray containing the dithered image.
 func DitherNord() js.Func {
 	return js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		imageBytes := make([]byte, args[0].Length())
@@ -96,12 +95,20 @@ func DitherNord() js.Func {
 				log.Printf("Image dithered in %v\n", t2.Sub(t1))
 
 				// Encode as PNG
+				log.Println("Encoding image...")
+				t1 = time.Now()
 				buf := new(bytes.Buffer)
 				png.Encode(buf, ditheredImage)
+				t2 = time.Now()
+				log.Printf("Image encoded in %v\n", t2.Sub(t1))
 
-				// Encode as img src b64 string and resolve
-				encodedImage := b64.StdEncoding.EncodeToString(buf.Bytes())
-				resolve.Invoke(js.ValueOf(encodedImage))
+				log.Println("Copying image to JS...")
+				t1 = time.Now()
+				encodedImage := js.Global().Get("Uint8ClampedArray").New(len(buf.Bytes()))
+				js.CopyBytesToJS(encodedImage, buf.Bytes())
+				t2 = time.Now()
+				log.Printf("Image copied in %v\n", t2.Sub(t1))
+				resolve.Invoke(encodedImage)
 			}()
 
 			return nil

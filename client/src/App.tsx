@@ -10,7 +10,6 @@ function App() {
       return;
     }
     const workerProxy: any = await wasmWorker("main.wasm");
-
     setImageSrc("");
 
     // Check if a file was selected
@@ -23,9 +22,12 @@ function App() {
     reader.onloadend = async (evt) => {
       if (evt.target!.readyState === FileReader.DONE) {
         const imageData = new Uint8Array(evt.target!.result as ArrayBuffer);
-        const ditheredImage = await workerProxy.DitherNord(imageData);
-        const outputValue = `data:image/png;base64,${ditheredImage}`;
-        setImageSrc(outputValue);
+        const ditheredImageArray = await workerProxy.DitherNord(imageData);
+        const imageBlob = new Blob([ditheredImageArray.buffer], {
+          type: "image/png",
+        });
+        const url = URL.createObjectURL(imageBlob);
+        setImageSrc(url);
       }
     };
   };
