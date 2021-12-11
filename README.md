@@ -21,4 +21,4 @@ A version is also available on IPFS:
 /ipfs/Qmdnx5vkt8qietF5BkEDTwxZUFKkh5g7FwYv1CgXYhQV1o
 ```
 
-You can access it directly [here](https://ipfs.io/ipfs/Qmdnx5vkt8qietF5BkEDTwxZUFKkh5g7FwYv1CgXYhQV1oP/).
+You can access it directly [here](https://ipfs.io/ipfs/Qmdnx5vkt8qietF5BkEDTwxZUFKkh5g7FwYv1CgXYhQV1o/).
