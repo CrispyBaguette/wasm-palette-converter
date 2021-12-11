@@ -1,41 +1,10 @@
-@media (prefers-color-scheme: dark) {
-  body {
-    color: #fff;
-    background: #000;
-  }
-  a:link {
-    color: #9cf;
-  }
-  a:hover,
-  a:visited:hover {
-    color: #cef;
-  }
-  a:visited {
-    color: #c9f;
-  }
-}
-body {
-  margin: 1em auto;
-  max-width: 40em;
-  padding: 0 0.62em;
-  font: 1.2em/1.62 sans-serif;
-}
-h1,
-h2,
-h3 {
-  line-height: 1.2;
-}
-.container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
 #output {
-  max-width: 100%;
-  align-self: center;
-}
-@media print {
-  body {
-    max-width: none;
-  }
+  image-rendering: optimizeSpeed; /* Legal fallback */
+  image-rendering: -moz-crisp-edges; /* Firefox        */
+  image-rendering: -o-crisp-edges; /* Opera          */
+  image-rendering: -webkit-optimize-contrast; /* Safari         */
+  image-rendering: optimize-contrast; /* CSS3 Proposed  */
+  image-rendering: crisp-edges; /* CSS4 Proposed  */
+  image-rendering: pixelated; /* CSS4 Proposed  */
+  -ms-interpolation-mode: nearest-neighbor; /* IE8+           */
 }

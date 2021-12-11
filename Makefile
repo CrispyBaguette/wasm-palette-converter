@@ -3,3 +3,5 @@ build-wasm:
 
 build-react:
 	cd client && npm run build
+
+all: build-wasm build-react
