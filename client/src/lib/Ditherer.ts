@@ -2,8 +2,11 @@ class Ditherer {
   async dither(image: Uint8ClampedArray): Promise<Uint8ClampedArray> {
     const worker: any = await wasmWorker("/main.wasm");
     let output: Uint8ClampedArray;
-    output = await worker.dither(image);
-    worker.terminate();
+    try {
+      output = await worker.dither(image);
+    } finally {
+      worker.terminate();
+    }
     return output;
   }
 }
