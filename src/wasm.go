@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/hex"
+	"fmt"
 	"image"
 	"image/color"
 	_ "image/jpeg"
@@ -41,6 +42,11 @@ func buildPalette(pal []string) (color.Palette, error) {
 		if err != nil {
 			return nil, err
 		}
+
+		if len(b) != 3 {
+			return nil, fmt.Errorf("invalid color length: %v", len(b))
+		}
+
 		palette[i] = color.RGBA{b[0], b[1], b[2], 0xff}
 	}
 
@@ -52,8 +58,7 @@ func ditherImage(img image.Image) image.Image {
 	ditherer := dither.NewDitherer(nordPalette)
 	ditherer.Matrix = dither.FloydSteinberg
 
-	// Dither image in a copy
-	dst := ditherer.DitherCopy(img)
+	dst := ditherer.Dither(img)
 
 	return dst
 }
@@ -67,9 +72,9 @@ func decodeImage(imageData []byte) (image.Image, error) {
 	return img, nil
 }
 
-// DittherNord returns a Promise that takes a UintArray containing a Jpeg or png image,
+// Dither returns a Promise that takes a UintArray containing a Jpeg or png image,
 // and resolves to a UintArray containing the dithered image.
-func DitherNord() js.Func {
+func Dither() js.Func {
 	return js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		imageBytes := make([]byte, args[0].Length())
 		js.CopyBytesToGo(imageBytes, args[0])
@@ -79,6 +84,8 @@ func DitherNord() js.Func {
 			reject := args[1]
 
 			go func() {
+				errorConstructor := js.Global().Get("Error")
+
 				// Decode image from raw bytes
 				img, err := decodeImage(imageBytes)
 				if err != nil {
@@ -98,7 +105,12 @@ func DitherNord() js.Func {
 				log.Println("Encoding image...")
 				t1 = time.Now()
 				buf := new(bytes.Buffer)
-				png.Encode(buf, ditheredImage)
+				err = png.Encode(buf, ditheredImage)
+				if err != nil {
+					log.Printf("Error encoding image: %v\n", err)
+					errorObject := errorConstructor.New(err.Error())
+					reject.Invoke(errorObject)
+				}
 				t2 = time.Now()
 				log.Printf("Image encoded in %v\n", t2.Sub(t1))
 

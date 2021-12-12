@@ -5,6 +5,6 @@ import (
 )
 
 func main() {
-	js.Global().Set("DitherNord", DitherNord())
+	js.Global().Set("dither", Dither())
 	<-make(chan bool)
 }

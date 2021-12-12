@@ -29,7 +29,7 @@ addEventListener(
       go.run(instantiatedSource.instance);
 
       // Go does nor exposes the exports in the instantiated module :(((
-      const methods = ["DitherNord"];
+      const methods = ["dither"];
       wasmResolve(methods);
       postMessage({
         eventType: "INITIALISED",
