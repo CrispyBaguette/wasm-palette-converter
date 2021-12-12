@@ -1,7 +1,7 @@
 import React from "react";
 import ImageInput from "./ImageInput";
 import ImageOutput from "./ImageOutput";
-import Ditherer from "./Ditherer";
+import Ditherer from "./lib/Ditherer";
 import ImagePreview from "./ImagePreview";
 import Header from "./Header";
 
@@ -19,9 +19,15 @@ function App() {
   const handleImageSubmit = async (data: Uint8ClampedArray) => {
     setBaseImage(data);
     setAppState(AppState.IMAGE_LOADED);
-    const ditheredImage = await new Ditherer().dither(data);
-    setDitheredImage(ditheredImage);
-    setAppState(AppState.IMAGE_PROCESSED);
+
+    try {
+      const ditheredImage = await new Ditherer().dither(data);
+      setDitheredImage(ditheredImage);
+      setAppState(AppState.IMAGE_PROCESSED);
+    } catch (e) {
+      console.error(e);
+      window.alert("Something went wrong. Please try again.");
+    }
   };
 
   return (
