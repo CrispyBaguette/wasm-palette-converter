@@ -46,12 +46,11 @@ addEventListener(
           eventId: eventId,
         });
       } catch (e) {
-        console.error(e);
         self.postMessage({
           eventType: "ERROR",
           eventData:
             "An error occured executing WASM instance function: " +
-            error.toString(),
+            e.toString(),
           eventId: eventId,
         });
       }
