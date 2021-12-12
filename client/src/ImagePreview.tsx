@@ -1,7 +1,3 @@
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import classNames from "classnames";
-
 interface ImagePreviewProps {
   imageData: Uint8ClampedArray;
 }
