@@ -2,8 +2,8 @@ package main
 
 import (
 	"bytes"
-	b64 "encoding/base64"
 	"encoding/hex"
+	"fmt"
 	"image"
 	"image/color"
 	_ "image/jpeg"
@@ -42,6 +42,11 @@ func buildPalette(pal []string) (color.Palette, error) {
 		if err != nil {
 			return nil, err
 		}
+
+		if len(b) != 3 {
+			return nil, fmt.Errorf("invalid color length: %v", len(b))
+		}
+
 		palette[i] = color.RGBA{b[0], b[1], b[2], 0xff}
 	}
 
@@ -53,8 +58,7 @@ func ditherImage(img image.Image) image.Image {
 	ditherer := dither.NewDitherer(nordPalette)
 	ditherer.Matrix = dither.FloydSteinberg
 
-	// Dither image in a copy
-	dst := ditherer.DitherCopy(img)
+	dst := ditherer.Dither(img)
 
 	return dst
 }
@@ -68,9 +72,9 @@ func decodeImage(imageData []byte) (image.Image, error) {
 	return img, nil
 }
 
-// DittherNord returns a Promise that takes a UintArray containing a Jpeg or png image,
-// and resolves to a string containing a base64 encoded png image.
-func DitherNord() js.Func {
+// Dither returns a Promise that takes a UintArray containing a Jpeg or png image,
+// and resolves to a UintArray containing the dithered image.
+func Dither() js.Func {
 	return js.FuncOf(func(this js.Value, args []js.Value) interface{} {
 		imageBytes := make([]byte, args[0].Length())
 		js.CopyBytesToGo(imageBytes, args[0])
@@ -80,6 +84,8 @@ func DitherNord() js.Func {
 			reject := args[1]
 
 			go func() {
+				errorConstructor := js.Global().Get("Error")
+
 				// Decode image from raw bytes
 				img, err := decodeImage(imageBytes)
 				if err != nil {
@@ -96,12 +102,25 @@ func DitherNord() js.Func {
 				log.Printf("Image dithered in %v\n", t2.Sub(t1))
 
 				// Encode as PNG
+				log.Println("Encoding image...")
+				t1 = time.Now()
 				buf := new(bytes.Buffer)
-				png.Encode(buf, ditheredImage)
+				err = png.Encode(buf, ditheredImage)
+				if err != nil {
+					log.Printf("Error encoding image: %v\n", err)
+					errorObject := errorConstructor.New(err.Error())
+					reject.Invoke(errorObject)
+				}
+				t2 = time.Now()
+				log.Printf("Image encoded in %v\n", t2.Sub(t1))
 
-				// Encode as img src b64 string and resolve
-				encodedImage := b64.StdEncoding.EncodeToString(buf.Bytes())
-				resolve.Invoke(js.ValueOf(encodedImage))
+				log.Println("Copying image to JS...")
+				t1 = time.Now()
+				encodedImage := js.Global().Get("Uint8ClampedArray").New(len(buf.Bytes()))
+				js.CopyBytesToJS(encodedImage, buf.Bytes())
+				t2 = time.Now()
+				log.Printf("Image copied in %v\n", t2.Sub(t1))
+				resolve.Invoke(encodedImage)
 			}()
 
 			return nil

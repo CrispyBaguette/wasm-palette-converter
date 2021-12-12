@@ -29,7 +29,7 @@ addEventListener(
       go.run(instantiatedSource.instance);
 
       // Go does nor exposes the exports in the instantiated module :(((
-      const methods = ["DitherNord"];
+      const methods = ["dither"];
       wasmResolve(methods);
       postMessage({
         eventType: "INITIALISED",
@@ -46,12 +46,11 @@ addEventListener(
           eventId: eventId,
         });
       } catch (e) {
-        console.error(e);
         self.postMessage({
           eventType: "ERROR",
           eventData:
             "An error occured executing WASM instance function: " +
-            error.toString(),
+            e.toString(),
           eventId: eventId,
         });
       }
