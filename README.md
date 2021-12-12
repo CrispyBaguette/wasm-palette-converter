@@ -18,7 +18,7 @@ npx http-server
 A version is also available on IPFS:
 
 ```
-/ipfs/QmU6MmYFEvEYcNLdJZKJ7LfTuAPhPnpLwiUt4YcmANQESP
+/ipfs/Qmdnx5vkt8qietF5BkEDTwxZUFKkh5g7FwYv1CgXYhQV1o
 ```
 
-You can access it directly [here](https://ipfs.io/ipfs/QmU6MmYFEvEYcNLdJZKJ7LfTuAPhPnpLwiUt4YcmANQESP/).
+You can access it directly [here](https://ipfs.io/ipfs/Qmdnx5vkt8qietF5BkEDTwxZUFKkh5g7FwYv1CgXYhQV1o/).
