@@ -5,13 +5,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 function Header() {
   return (
     <header className="flex items-center bg-nord-1 text-nord-5 py-3 px-2">
-      <a href="https://github.com/CrispyBaguette/wasm-palette-converter">
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://github.com/CrispyBaguette/wasm-palette-converter"
+      >
         <FontAwesomeIcon
           icon={faGithub}
           className="fa-2x hover:text-nord-7 mx-2"
         />
       </a>
-      <a href="https://blog.bruyant.xyz">
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href="https://blog.bruyant.xyz"
+      >
         <FontAwesomeIcon
           icon={faIgloo}
           className="fa-2x hover:text-nord-7 mx-2"
