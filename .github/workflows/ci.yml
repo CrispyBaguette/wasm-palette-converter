@@ -1,0 +1,147 @@
+name: Go
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-wasm:
+    runs-on: ubuntu-latest
+    env:
+      working_directory: "./src"
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.17
+
+    - name: Build
+      run: go build -v -o main.wasm ./...
+      working-directory: ${{env.working_directory}}
+      env:
+        GOOS: js
+        GOARCH: wasm
+        
+    - name: Upload wasm file
+      uses: actions/upload-artifact@v2
+      with:
+        name: wasm
+        path: ${{env.working_directory}}/main.wasm
+  
+  build-react:
+    runs-on: ubuntu-latest
+    env:
+      working_directory: "./client"
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.5.0
+      with:
+        node-version-file: .nvmrc
+    
+    - name: NPM CI
+      working-directory: ${{env.working_directory}}
+      run: npm ci
+    
+    - name: React build
+      working-directory: ${{env.working_directory}}
+      run: npm run build
+      
+    - name: Upload react client
+      uses: actions/upload-artifact@v2
+      with:
+        name: react-app
+        path: ${{env.working_directory}}/build
+        
+  merge:
+    runs-on: ubuntu-latest
+    env:
+      working_directory: "./client"
+    steps:
+      - name: Download React app
+        uses: actions/download-artifact@v2
+        with:
+          name: react-app
+          path: app
+          
+      - name: Download WASM program
+        uses: actions/download-artifact@v2
+        with:
+          name: wasm
+          path: app/main.wasm
+      
+      - name: Upload react app
+        uses: actions/upload-artifact@v2
+        with:
+          name: react-app-wasm
+          path: app
+          
+  web3-storage:
+    name: Push to web3.storage
+    needs: merge
+    runs-on: ubuntu-latest
+    outputs:
+      cid: ${{ steps.web3.outputs.cid }}
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: react-app-wasm
+          path: react-app-wasm
+          
+      - name: Push to web3.storage
+        uses: web3-storage/add-to-web3@v1
+        id: web3
+        with:
+          web3_token: ${{ secrets.WEB3_STORAGE_TOKEN }}
+          path_to_add: react-app-wasm
+          
+      - run: echo ${{ steps.web3.outputs.cid }}
+
+  pinata:
+    name: Pin on Pinata
+    needs: merge
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - uses: actions/download-artifact@v2
+        with:
+          name: react-app-wasm
+          path: react-app-wasm
+          
+      - name: pin
+        id: pinata
+        uses: anantaramdas/ipfs-pinata-deploy-action@v1.6.4
+        with:
+          pin-name: "paletteswitcher"
+          path: "./react-app-wasm"
+          pinata-api-key: ${{ secrets.PINATA_API_KEY }}
+          pinata-secret-api-key: ${{ secrets.PINATA_API_SECRET }}
+          verbose: true
+          remove-old: true
+
+  update-dns:
+    name: Update OVH DNS
+    needs: [web3-storage, pinata]
+    runs-on: ubuntu-latest
+    steps:
+      - name: OVH alter DNS record
+        uses: CrispyBaguette/ovh-dns-alter-action@v1.1.1
+        with:
+          application-key: ${{ secrets.OVH_APPLICATION_KEY }}
+          application-secret: ${{ secrets.OVH_APPLICATION_SECRET }}
+          consumer-key: ${{ secrets.OVH_CONSUMER_KEY }}
+          dns-zone: bruyant.xyz
+          record-id: 5218627602
+          target: "dnslink=/ipfs/${{ needs.web3-storage.outputs.cid }}"
+          
+      - name: OVH refresh DNS zone
+        uses: CrispyBaguette/ovh-dns-refresh-action@v1.0.1
+        with:
+          application-key: ${{ secrets.OVH_APPLICATION_KEY }}
+          application-secret: ${{ secrets.OVH_APPLICATION_SECRET }}
+          consumer-key: ${{ secrets.OVH_CONSUMER_KEY }}
+          dns-zone: bruyant.xyz
