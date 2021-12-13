@@ -1,11 +1,10 @@
 import React, { FormEventHandler } from "react";
 
 interface Props {
-  onImageSubmit: (image: Uint8ClampedArray) => void;
+  onImageSubmit: (image: Blob) => void;
 }
 
 function ImageInput({ onImageSubmit }: Props) {
-  let fileReader: FileReader;
   const fileInputRef = React.useRef<HTMLInputElement>(null);
 
   const handleSubmit: FormEventHandler = (e) => {
@@ -18,16 +17,7 @@ function ImageInput({ onImageSubmit }: Props) {
       return;
     }
 
-    fileReader = new FileReader();
-    fileReader.onloadend = handleFileRead;
-    fileReader.readAsArrayBuffer(fileInputRef.current.files[0]);
-  };
-
-  const handleFileRead: EventListener = (e) => {
-    if (fileReader.result) {
-      const image = new Uint8ClampedArray(fileReader.result as ArrayBuffer);
-      onImageSubmit(image);
-    }
+    onImageSubmit(fileInputRef.current.files[0]);
   };
 
   return (
