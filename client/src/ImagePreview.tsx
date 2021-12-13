@@ -1,10 +1,17 @@
+import { useEffect } from "react";
+
 interface ImagePreviewProps {
-  imageData: Uint8ClampedArray;
+  imageData: Blob;
 }
 
 function ImagePreview({ imageData }: ImagePreviewProps) {
-  const imageBlob = new Blob([imageData], { type: "image/png" });
-  const imageUrl = URL.createObjectURL(imageBlob);
+  const imageUrl = URL.createObjectURL(imageData);
+
+  useEffect(() => { 
+    return () => { 
+      URL.revokeObjectURL(imageUrl);
+    }
+  }, [imageUrl]);
 
   return (
     <div className="blur-sm mx-auto">

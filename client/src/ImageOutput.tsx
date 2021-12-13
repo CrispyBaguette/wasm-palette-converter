@@ -1,16 +1,23 @@
 import FileSaver from "file-saver";
+import { useEffect } from "react";
 import "./ImageOutput.css";
 
 interface OutputProps {
-  imageData: Uint8ClampedArray;
+  imageData: Blob;
 }
 
 function ImageOutput({ imageData }: OutputProps) {
-  const imageBlob = new Blob([imageData], { type: "image/png" });
-  const imageUrl = URL.createObjectURL(imageBlob);
+  const imageUrl = URL.createObjectURL(imageData);
+
+  useEffect(() => { 
+    return () => { 
+      URL.revokeObjectURL(imageUrl);
+    }
+  }, [imageUrl]);
 
   const handleClick = () => {
-    FileSaver.saveAs(imageBlob, "image.png");
+    const extension = imageData.type.split("/")[1];
+    FileSaver.saveAs(imageData, `image.${extension}`);
   };
 
   return (

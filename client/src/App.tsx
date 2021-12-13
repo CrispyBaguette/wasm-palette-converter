@@ -12,17 +12,18 @@ enum AppState {
 }
 
 function App() {
-  const [baseImage, setBaseImage] = React.useState<Uint8ClampedArray>();
-  const [ditheredImage, setDitheredImage] = React.useState<Uint8ClampedArray>();
+  const [baseImage, setBaseImage] = React.useState<Blob>();
+  const [ditheredImage, setDitheredImage] = React.useState<Blob>();
   const [appState, setAppState] = React.useState<AppState>(AppState.NO_IMAGE);
 
-  const handleImageSubmit = async (data: Uint8ClampedArray) => {
+  const handleImageSubmit = async (data: Blob) => {
     setBaseImage(data);
     setAppState(AppState.IMAGE_LOADED);
 
     try {
-      const ditheredImage = await new Ditherer().dither(data);
-      setDitheredImage(ditheredImage);
+      const imageArray = new Uint8ClampedArray(await data.arrayBuffer());
+      const ditheredImage = await new Ditherer().dither(imageArray);
+      setDitheredImage(new Blob([ditheredImage], { type: "image/png" }));
       setAppState(AppState.IMAGE_PROCESSED);
     } catch (e) {
       console.error(e);
@@ -50,11 +51,11 @@ function App() {
           </p>
         </article>
         <ImageInput onImageSubmit={handleImageSubmit}></ImageInput>
-        {appState === AppState.IMAGE_LOADED && (
-          <ImagePreview imageData={baseImage as Uint8ClampedArray} />
+        {appState === AppState.IMAGE_LOADED && baseImage && (
+          <ImagePreview imageData={baseImage} />
         )}
-        {appState === AppState.IMAGE_PROCESSED && (
-          <ImageOutput imageData={ditheredImage as Uint8ClampedArray} />
+        {appState === AppState.IMAGE_PROCESSED && ditheredImage && (
+          <ImageOutput imageData={ditheredImage} />
         )}
       </main>
     </div>
