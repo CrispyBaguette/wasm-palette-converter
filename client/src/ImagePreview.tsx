@@ -7,18 +7,18 @@ interface ImagePreviewProps {
 function ImagePreview({ imageData }: ImagePreviewProps) {
   const imageUrl = URL.createObjectURL(imageData);
 
-  useEffect(() => { 
-    return () => { 
+  useEffect(() => {
+    return () => {
       URL.revokeObjectURL(imageUrl);
-    }
+    };
   }, [imageUrl]);
 
   return (
-    <div className="blur-sm mx-auto">
+    <div className="blur-sm max-w-4xl mx-auto">
       <img
         alt="preview"
         src={imageUrl}
-        className="object-contain max-h-96 max-w-96 mx-auto"
+        className="object-cover min-w-[70%] my-4 px-2 mx-auto"
       />
     </div>
   );

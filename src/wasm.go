@@ -15,25 +15,6 @@ import (
 	"github.com/makeworld-the-better-one/dither/v2"
 )
 
-var nordPalette, _ = buildPalette([]string{
-	"2e3440",
-	"3b4252",
-	"434c5e",
-	"4c566a",
-	"d8dee9",
-	"e5e9f0",
-	"eceff4",
-	"8fbcbb",
-	"88c0d0",
-	"81a1c1",
-	"5e81ac",
-	"bf616a",
-	"d08770",
-	"ebcb8b",
-	"a3be8c",
-	"b48ead",
-})
-
 func buildPalette(pal []string) (color.Palette, error) {
 	var palette = make(color.Palette, len(pal))
 
@@ -53,9 +34,9 @@ func buildPalette(pal []string) (color.Palette, error) {
 	return palette, nil
 }
 
-func ditherImage(img image.Image) image.Image {
+func ditherImage(img image.Image, palette color.Palette) image.Image {
 	// Build ditherer
-	ditherer := dither.NewDitherer(nordPalette)
+	ditherer := dither.NewDitherer(palette)
 	ditherer.Matrix = dither.FloydSteinberg
 
 	dst := ditherer.Dither(img)
@@ -79,9 +60,9 @@ func Dither() js.Func {
 		imageBytes := make([]byte, args[0].Length())
 		js.CopyBytesToGo(imageBytes, args[0])
 
-		handler := js.FuncOf(func(this js.Value, args []js.Value) interface{} {
-			resolve := args[0]
-			reject := args[1]
+		handler := js.FuncOf(func(promiseThis js.Value, promiseArgs []js.Value) interface{} {
+			resolve := promiseArgs[0]
+			reject := promiseArgs[1]
 
 			go func() {
 				errorConstructor := js.Global().Get("Error")
@@ -94,10 +75,21 @@ func Dither() js.Func {
 					reject.Invoke(errorObject)
 				}
 
+				// Build palette
+				colors := make([]string, args[1].Length())
+				for i := 0; i < args[1].Length(); i++ {
+					colors[i] = args[1].Index(i).String()
+				}
+				palette, err := buildPalette(colors)
+				if err != nil {
+					errorObject := errorConstructor.New(err.Error())
+					reject.Invoke(errorObject)
+				}
+
 				// Perform dithering
 				log.Println("Dithering image...")
 				t1 := time.Now()
-				ditheredImage := ditherImage(img)
+				ditheredImage := ditherImage(img, palette)
 				t2 := time.Now()
 				log.Printf("Image dithered in %v\n", t2.Sub(t1))
 

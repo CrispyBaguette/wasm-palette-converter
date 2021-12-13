@@ -1,11 +1,13 @@
 import React, { FormEventHandler } from "react";
+import Palette, { palettes } from "./Palette";
 
 interface Props {
-  onImageSubmit: (image: Blob) => void;
+  onImageSubmit: (image: Blob, palette: Palette) => void;
 }
 
 function ImageInput({ onImageSubmit }: Props) {
   const fileInputRef = React.useRef<HTMLInputElement>(null);
+  const [paletteIndex, setPaletteIndex] = React.useState(0);
 
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
@@ -17,7 +19,11 @@ function ImageInput({ onImageSubmit }: Props) {
       return;
     }
 
-    onImageSubmit(fileInputRef.current.files[0]);
+    onImageSubmit(fileInputRef.current.files[0], palettes[paletteIndex]);
+  };
+
+  const handlePaletteChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setPaletteIndex(parseInt(event.target.value));
   };
 
   return (
@@ -34,12 +40,20 @@ function ImageInput({ onImageSubmit }: Props) {
           className="block w-full mt-1 text-sm text-nord-0 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-nord-4 file:text-nord-0 hover:file:bg-nord-5"
         />
       </label>
-      {/* <label>
+      <label>
         <span className="block">Select a color palette:</span>
-        <select className="form-select block w-full mt-1">
-          <option value="nord">Nord</option>
+        <select
+          value={paletteIndex}
+          onChange={handlePaletteChange}
+          className="form-select block w-full mt-1"
+        >
+          {palettes.map((palette, i) => (
+            <option key={i} value={i}>
+              {palette.label}
+            </option>
+          ))}
         </select>
-      </label> */}
+      </label>
       <button
         type="submit"
         value="Go"
