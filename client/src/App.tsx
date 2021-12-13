@@ -36,19 +36,18 @@ function App() {
     <div className="bg-nord-6 text-nord-0 min-h-screen">
       <Header />
       <main className="container mx-auto pb-5">
-        <article className="max-w-prose mx-auto pb-5 px-2">
+        <article className="text-xl leading-relaxed max-w-prose space-y-2 mx-auto pb-5 px-2">
           <h1 className="text-3xl text-center pb-3">
             Go+Wasm image dithering tool
           </h1>
-          <aside className="text-xl text-center pb-3">
-            Featuring the Nord Color Palette
-          </aside>
           <p>
-            Load an image, click Go and wait (potentially for a while) for the
-            image to be processed using the Floyd-Steinberg algorithm.
+            Load an image, select a palette, click Go and wait for the image to
+            be processed using the Floyd-Steinberg algorithm.
           </p>
           <p>
-            WebAssembly might run out of memory when processing larger images.
+            The preview image is scaled using the nearest-neighbor algorithm,
+            which might cause artifacts in some cases. Download the image for
+            the best experience.
           </p>
         </article>
         <ImageInput onImageSubmit={handleImageSubmit}></ImageInput>
