@@ -1,9 +1,14 @@
+import Palette from "../Palette";
+
 class Ditherer {
-  async dither(image: Uint8ClampedArray): Promise<Uint8ClampedArray> {
+  async dither(
+    image: Uint8ClampedArray,
+    palette: Palette
+  ): Promise<Uint8ClampedArray> {
     const worker: any = await wasmWorker("./main.wasm");
     let output: Uint8ClampedArray;
     try {
-      output = await worker.dither(image);
+      output = await worker.dither(image, palette.colors);
     } finally {
       worker.terminate();
     }

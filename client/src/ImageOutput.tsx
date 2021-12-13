@@ -9,10 +9,10 @@ interface OutputProps {
 function ImageOutput({ imageData }: OutputProps) {
   const imageUrl = URL.createObjectURL(imageData);
 
-  useEffect(() => { 
-    return () => { 
+  useEffect(() => {
+    return () => {
       URL.revokeObjectURL(imageUrl);
-    }
+    };
   }, [imageUrl]);
 
   const handleClick = () => {
@@ -21,11 +21,11 @@ function ImageOutput({ imageData }: OutputProps) {
   };
 
   return (
-    <div className="mx-auto">
+    <div className="max-w-4xl mx-auto">
       <img
         alt="dithering output"
         src={imageUrl}
-        className="object-contain max-h-96 max-w-96 mx-auto"
+        className="object-cover min-w-[70%] my-4 px-2 mx-auto"
       />
       <button
         onClick={handleClick}
