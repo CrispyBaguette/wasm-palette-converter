@@ -39,30 +39,30 @@ const monokai = new Palette("Monokai", [
   "6c99bb",
 ]);
 
-const greyScale1bit = new Palette("Grey Scale 1 bit (Black & White)", [
+const grayScale1bit = new Palette("Gray Scale 1 bit (Black & White)", [
   "000000",
   "ffffff",
 ]);
 
-const greyScale2bits = new Palette("Grey Scale 2 bits", [
+const grayScale2bits = new Palette("Gray Scale 2 bits", [
   "000000",
   "676767",
   "b6b6b6",
   "ffffff",
 ]);
 
-let greyColors: string[] = [];
+let grayColors: string[] = [];
 for (let i = 0; i < 256; i++) {
   const hexValue = i.toString(16).padStart(2, "0");
-  greyColors.push(`${hexValue}${hexValue}${hexValue}`);
+  grayColors.push(`${hexValue}${hexValue}${hexValue}`);
 }
-const greyScale8bits = new Palette("Grey Scale 8 bits", greyColors);
+const grayScale8bits = new Palette("Gray Scale 8 bits", grayColors);
 
 export const palettes = [
   nord,
   monokai,
-  greyScale1bit,
-  greyScale2bits,
-  greyScale8bits,
+  grayScale1bit,
+  grayScale2bits,
+  grayScale8bits,
 ];
 export default Palette;
