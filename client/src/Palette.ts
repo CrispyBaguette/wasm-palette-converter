@@ -3,6 +3,10 @@ class Palette {
   label: string;
 
   constructor(label: string, colors: string[]) {
+    if (colors.length < 2) {
+      throw new Error("Palette requires at least two colors.");
+    }
+
     this.label = label;
     this.colors = colors;
   }
@@ -51,7 +55,40 @@ const grayScale2bits = new Palette("Gray Scale 2 bits", [
   "ffffff",
 ]);
 
-const palettes = [nord, monokai, grayScale1bit, grayScale2bits];
+const grayScale2bitsGamma = new Palette("Gray, 4 shades, gamma-corrected", [
+  "000000",
+  "888888",
+  "b6b6b6",
+  "e0e0e0",
+]);
+
+const darcula = new Palette("Darcula", [
+  "000000",
+  "2B2B2B",
+  "323232",
+  "214283",
+  "555555",
+  "E74644",
+  "379C1A",
+  "5394ec",
+  "299999",
+  "808080",
+  "AE8ABE",
+  "DCC457",
+  "A9B7C6",
+  "EEEEEE",
+]);
+
+const palettes = [
+  nord,
+  monokai,
+  grayScale1bit,
+  grayScale2bits,
+  grayScale2bitsGamma,
+  darcula,
+];
+
+palettes.sort((a, b) => a.label.localeCompare(b.label));
 
 export { palettes };
 export default Palette;
