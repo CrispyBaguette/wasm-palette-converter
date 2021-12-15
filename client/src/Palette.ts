@@ -58,11 +58,7 @@ for (let i = 0; i < 256; i++) {
 }
 const grayScale8bits = new Palette("Gray Scale 8 bits", grayColors);
 
-export const palettes = [
-  nord,
-  monokai,
-  grayScale1bit,
-  grayScale2bits,
-  grayScale8bits,
-];
+const palettes = [nord, monokai, grayScale1bit, grayScale2bits, grayScale8bits];
+
+export { palettes };
 export default Palette;
