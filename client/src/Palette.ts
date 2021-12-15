@@ -51,14 +51,7 @@ const grayScale2bits = new Palette("Gray Scale 2 bits", [
   "ffffff",
 ]);
 
-let grayColors: string[] = [];
-for (let i = 0; i < 256; i++) {
-  const hexValue = i.toString(16).padStart(2, "0");
-  grayColors.push(`${hexValue}${hexValue}${hexValue}`);
-}
-const grayScale8bits = new Palette("Gray Scale 8 bits", grayColors);
-
-const palettes = [nord, monokai, grayScale1bit, grayScale2bits, grayScale8bits];
+const palettes = [nord, monokai, grayScale1bit, grayScale2bits];
 
 export { palettes };
 export default Palette;
