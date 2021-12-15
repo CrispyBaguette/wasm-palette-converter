@@ -1,5 +1,6 @@
 import React, { FormEventHandler } from "react";
 import Palette, { palettes } from "./Palette";
+import PalettePreview from "./PalettePreview";
 import PaletteSelect from "./PaletteSelect";
 
 interface Props {
@@ -45,6 +46,7 @@ function ImageInput({ onImageSubmit }: Props) {
         <span className="block">Select a color palette:</span>
         <PaletteSelect value={palette} onChange={handlePaletteChange} />
       </label>
+      <PalettePreview palette={palette}></PalettePreview>
       <button
         type="submit"
         value="Go"
