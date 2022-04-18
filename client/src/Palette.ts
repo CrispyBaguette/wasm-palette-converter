@@ -62,21 +62,19 @@ const grayScale2bitsGamma = new Palette("Gray, 4 shades, gamma-corrected", [
   "e0e0e0",
 ]);
 
-const darcula = new Palette("Darcula", [
-  "000000",
-  "2B2B2B",
-  "323232",
-  "214283",
-  "555555",
-  "E74644",
-  "379C1A",
-  "5394ec",
-  "299999",
-  "808080",
-  "AE8ABE",
-  "DCC457",
-  "A9B7C6",
-  "EEEEEE",
+// https://draculatheme.com
+const dracula = new Palette("Dracula", [
+  "282a36",
+  "44475a",
+  "f8f8f2",
+  "6272a4",
+  "8be9fd",
+  "50fa7b",
+  "ffb86c",
+  "ff79c6",
+  "bd93f9",
+  "ff5555",
+  "f1fa8c",
 ]);
 
 const palettes = [
@@ -85,7 +83,7 @@ const palettes = [
   grayScale1bit,
   grayScale2bits,
   grayScale2bitsGamma,
-  darcula,
+  dracula,
 ];
 
 palettes.sort((a, b) => a.label.localeCompare(b.label));
