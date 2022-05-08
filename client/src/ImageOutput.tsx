@@ -29,7 +29,22 @@ function ImageOutput({ imageData }: OutputProps) {
       />
       <button
         onClick={handleClick}
-        className="block w-48 mx-auto mt-1 py-2 px-4 text-sm text-center text-nord-0 bg-nord-4 hover:bg-nord-5"
+        className={
+          "block " +
+          "w-48 " +
+          "mx-auto " +
+          "mt-1 " +
+          "py-2 " +
+          "px-4 " +
+          "text-sm " +
+          "text-center " +
+          "text-nord-0 " +
+          "dark:text-nord-5 " +
+          "bg-nord-4 " +
+          "dark:bg-nord-1 " +
+          "hover:bg-nord-5 " +
+          "dark:hover:bg-nord-2"
+        }
       >
         Download
       </button>
@@ -37,7 +52,22 @@ function ImageOutput({ imageData }: OutputProps) {
         href={imageUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="block w-48 mx-auto mt-1 py-2 px-4 text-sm text-center text-nord-0 bg-nord-4 hover:bg-nord-5"
+        className={
+          "block " +
+          "w-48 " +
+          "mx-auto " +
+          "mt-1 " +
+          "py-2 " +
+          "px-4 " +
+          "text-sm " +
+          "text-center " +
+          "text-nord-0 " +
+          "dark:text-nord-5 " +
+          "bg-nord-4 " +
+          "dark:bg-nord-1 " +
+          "hover:bg-nord-5 " +
+          "dark:hover:bg-nord-2"
+        }
       >
         Open in new tab
       </a>

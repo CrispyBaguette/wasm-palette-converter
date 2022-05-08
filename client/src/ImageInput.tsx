@@ -39,7 +39,26 @@ function ImageInput({ onImageSubmit }: Props) {
           type="file"
           accept="image/png, image/jpeg"
           ref={fileInputRef}
-          className="block w-full mt-1 text-sm text-nord-0 file:mr-4 file:py-2 file:px-4 file:border-0 file:text-sm file:font-semibold file:bg-nord-4 file:text-nord-0 hover:file:bg-nord-5"
+          className={
+            "block " +
+            "w-full " +
+            "mt-1 " +
+            "text-sm " +
+            "text-nord-0 " +
+            "dark:text-nord-5 " +
+            "file:mr-4 " +
+            "file:py-2 " +
+            "file:px-4 " +
+            "file:border-0 " +
+            "file:text-sm " +
+            "file:font-semibold " +
+            "file:bg-nord-4 " +
+            "dark:file:bg-nord-1 " +
+            "file:text-nord-0 " +
+            "dark:file:text-nord-5 " +
+            "hover:file:bg-nord-5 " +
+            "dark:hover:file:bg-nord-2"
+          }
         />
       </label>
       <label>
@@ -50,7 +69,21 @@ function ImageInput({ onImageSubmit }: Props) {
       <button
         type="submit"
         value="Go"
-        className="block w-32 mx-auto mt-1 py-2 px-4 text-sm text-nord-0 bg-nord-4 hover:bg-nord-5"
+        className={
+          "block " +
+          "w-32 " +
+          "mx-auto " +
+          "mt-1 " +
+          "py-2 " +
+          "px-4 " +
+          "text-sm " +
+          "text-nord-0 " +
+          "dark:text-nord-5 " +
+          "bg-nord-4 " +
+          "dark:bg-nord-1 " +
+          "hover:bg-nord-5 " +
+          "dark:hover:bg-nord-2"
+        }
       >
         Go
       </button>
