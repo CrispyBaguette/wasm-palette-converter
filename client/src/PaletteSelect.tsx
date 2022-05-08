@@ -24,7 +24,16 @@ function PaletteSelect({ value, onChange }: PaletteSelectProps) {
     <select
       value={valueIndex}
       onChange={handlePaletteChange}
-      className="form-select block w-full mt-1"
+      className={
+        "form-select " +
+        "dark:text-nord-5 " +
+        "dark:bg-nord-1 " +
+        "focus:ring-nord-7 " +
+        "focus:border-nord-7 " +
+        "block " +
+        "w-full " +
+        "mt-1"
+      }
     >
       {paletteOptions}
     </select>

@@ -26,7 +26,7 @@ function PalettePreview({ palette }: PalettePreviewProps) {
 
   return (
     <div
-      className="h-5 my-2 border-solid border-2 border-nord-0"
+      className="h-5 my-2 border-solid border-2 border-nord-0 dark:border-nord-5"
       style={{ background: gradientString }}
     ></div>
   );
