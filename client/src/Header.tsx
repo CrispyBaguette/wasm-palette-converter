@@ -1,6 +1,7 @@
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import { faIgloo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ThemeToggler from "./ThemeToggler";
 
 function Header() {
   return (
@@ -36,6 +37,9 @@ function Header() {
           IPFS
         </a>
         . Visit using your own node !
+      </span>
+      <span className="ml-auto">
+        <ThemeToggler />
       </span>
     </header>
   );
