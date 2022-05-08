@@ -44,6 +44,9 @@ function ThemeToggler() {
       case "dark":
         setTheme("light");
         break;
+      default:
+        setTheme("light");
+        break;
     }
   };
 
