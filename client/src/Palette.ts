@@ -77,6 +77,48 @@ const dracula = new Palette("Dracula", [
   "f1fa8c",
 ]);
 
+const gruvbox = new Palette("Gruvbox", [
+  "1d2021",
+  "282828",
+  "32302f",
+  "3c3836",
+  "504945",
+  "665c54",
+  "7c6f64",
+  "7c6f64",
+  "928374",
+  "928374",
+  "f9f5d7",
+  "fbf1c7",
+  "f2e5bc",
+  "ebdbb2",
+  "d5c4a1",
+  "bdae93",
+  "a89984",
+  "a89984",
+  "fb4934",
+  "b8bb26",
+  "fabd2f",
+  "83a598",
+  "d3869b",
+  "8ec07c",
+  "fe8019",
+  "cc241d",
+  "98971a",
+  "d79921",
+  "458588",
+  "b16286",
+  "689d6a",
+  "d65d0e",
+  "9d0006",
+  "79740e",
+  "b57614",
+  "076678",
+  "8f3f71",
+  "427b58",
+  "af3a03",
+]);
+
 const palettes = [
   nord,
   monokai,
@@ -84,6 +126,7 @@ const palettes = [
   grayScale2bits,
   grayScale2bitsGamma,
   dracula,
+  gruvbox,
 ];
 
 palettes.sort((a, b) => a.label.localeCompare(b.label));
