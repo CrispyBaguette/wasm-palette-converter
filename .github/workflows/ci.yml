@@ -101,32 +101,9 @@ jobs:
           
       - run: echo ${{ steps.web3.outputs.cid }}
 
-  pinata:
-    name: Pin on Pinata
-    needs: merge
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      
-      - uses: actions/download-artifact@v2
-        with:
-          name: react-app-wasm
-          path: react-app-wasm
-          
-      - name: pin
-        id: pinata
-        uses: anantaramdas/ipfs-pinata-deploy-action@v1.6.4
-        with:
-          pin-name: "paletteswitcher"
-          path: "./react-app-wasm"
-          pinata-api-key: ${{ secrets.PINATA_API_KEY }}
-          pinata-secret-api-key: ${{ secrets.PINATA_API_SECRET }}
-          verbose: true
-          remove-old: true
-
   update-dns:
     name: Update OVH DNS
-    needs: [web3-storage, pinata]
+    needs: [web3-storage]
     runs-on: ubuntu-latest
     steps:
       - name: OVH alter DNS record
