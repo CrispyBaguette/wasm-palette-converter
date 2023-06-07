@@ -69,6 +69,7 @@ function ImageInput({ onImageSubmit }: Props) {
       <button
         type="submit"
         value="Go"
+        data-umami-event="image submit"
         className={
           "block " +
           "w-32 " +

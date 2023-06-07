@@ -26,9 +26,11 @@ function App() {
       const ditheredImage = await new Ditherer().dither(imageArray, palette);
       setDitheredImage(new Blob([ditheredImage], { type: "image/png" }));
       setAppState(AppState.IMAGE_PROCESSED);
+      (window as any).umami.track("image processed");
     } catch (e) {
       console.error(e);
       window.alert("Something went wrong. Please try again.");
+      (window as any).umami.track("processing error");
     }
   };
 
