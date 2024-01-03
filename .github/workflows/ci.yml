@@ -25,7 +25,7 @@ jobs:
         GOARCH: wasm
         
     - name: Upload wasm file
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: wasm
         path: ${{env.working_directory}}/main.wasm
@@ -51,7 +51,7 @@ jobs:
       run: npm run build
       
     - name: Upload react client
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: react-app
         path: ${{env.working_directory}}/build
