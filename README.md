@@ -1,4 +1,4 @@
-# wasm-palette-converter
+# PaletteSwitcher
 
 Go+Wasm image palette converter
 
