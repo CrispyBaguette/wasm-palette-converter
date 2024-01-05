@@ -10,7 +10,7 @@ function Header() {
         <a
           target="_blank"
           rel="noopener noreferrer"
-          href="https://github.com/CrispyBaguette/wasm-palette-converter"
+          href="https://gitea.bruyant.xyz/alexandre/PaletteSwitcher"
         >
           <FontAwesomeIcon
             icon={faGithub}
