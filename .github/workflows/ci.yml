@@ -2,7 +2,7 @@ name: Build and deploy
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build-wasm:
@@ -10,52 +10,52 @@ jobs:
     env:
       working_directory: "./src"
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.21
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.21
 
-    - name: Build
-      run: go build -v -o main.wasm ./...
-      working-directory: ${{env.working_directory}}
-      env:
-        GOOS: js
-        GOARCH: wasm
-        
-    - name: Upload wasm file
-      uses: actions/upload-artifact@v3
-      with:
-        name: wasm
-        path: ${{env.working_directory}}/main.wasm
-  
+      - name: Build
+        run: go build -v -o main.wasm ./...
+        working-directory: ${{env.working_directory}}
+        env:
+          GOOS: js
+          GOARCH: wasm
+
+      - name: Upload wasm file
+        uses: actions/upload-artifact@v3
+        with:
+          name: wasm
+          path: ${{env.working_directory}}/main.wasm
+
   build-react:
     runs-on: ubuntu-latest
     env:
       working_directory: "./client"
     steps:
-    - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
 
-    - name: Setup Node.js environment
-      uses: actions/setup-node@v2.5.0
-      with:
-        node-version-file: .nvmrc
-    
-    - name: NPM CI
-      working-directory: ${{env.working_directory}}
-      run: npm ci
-    
-    - name: React build
-      working-directory: ${{env.working_directory}}
-      run: npm run build
-      
-    - name: Upload react client
-      uses: actions/upload-artifact@v3
-      with:
-        name: react-app
-        path: ${{env.working_directory}}/build
-        
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.5.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: NPM CI
+        working-directory: ${{env.working_directory}}
+        run: npm ci
+
+      - name: React build
+        working-directory: ${{env.working_directory}}
+        run: npm run build
+
+      - name: Upload react client
+        uses: actions/upload-artifact@v3
+        with:
+          name: react-app
+          path: ${{env.working_directory}}/build
+
   merge:
     runs-on: ubuntu-latest
     needs: [build-wasm, build-react]
@@ -67,43 +67,46 @@ jobs:
         with:
           name: react-app
           path: app
-          
+
       - name: Download WASM program
         uses: actions/download-artifact@v3
         with:
           name: wasm
           path: app
-      
+
       - name: Upload react app
         uses: actions/upload-artifact@v3
         with:
           name: react-app-wasm
           path: app
-          
-  web3-storage:
-    name: Push to web3.storage
-    needs: merge
+
+  pin:
+    name: Pin to cluster node
+    needs: build
     runs-on: ubuntu-latest
+    container:
+      image: catthehacker/ubuntu:act-latest
     outputs:
-      cid: ${{ steps.web3.outputs.cid }}
+      cid: ${{ steps.pin.outputs.cid }}
     steps:
       - uses: actions/download-artifact@v3
         with:
           name: react-app-wasm
-          path: react-app-wasm
-          
-      - name: Push to web3.storage
-        uses: web3-storage/add-to-web3@v1
-        id: web3
+          path: app
+
+      - name: pin
+        id: pin
+        uses: docker://gitea.bruyant.xyz/alexandre/ipfs-node-pin:main
         with:
-          web3_token: ${{ secrets.WEB3_STORAGE_TOKEN }}
-          path_to_add: react-app-wasm
-          
-      - run: echo ${{ steps.web3.outputs.cid }}
+          ipfs_host: "ipfs-api.ipfs.svc"
+          ipfs_port: "5001"
+          path_to_add: app
+      - name: print CID
+        run: echo ${{ steps.pin.outputs.cid }}
 
   update-dns:
     name: Update OVH DNS
-    needs: [web3-storage]
+    needs: [pin]
     runs-on: ubuntu-latest
     steps:
       - name: OVH alter DNS record
@@ -114,8 +117,8 @@ jobs:
           consumer-key: ${{ secrets.OVH_CONSUMER_KEY }}
           dns-zone: bruyant.xyz
           record-id: 5218627602
-          target: "dnslink=/ipfs/${{ needs.web3-storage.outputs.cid }}"
-          
+          target: "dnslink=/ipfs/${{ needs.pin.outputs.cid }}"
+
       - name: OVH refresh DNS zone
         uses: CrispyBaguette/ovh-dns-refresh-action@v1.0.1
         with:
