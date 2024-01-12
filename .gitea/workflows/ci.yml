@@ -82,7 +82,7 @@ jobs:
 
   pin:
     name: Pin to cluster node
-    needs: build
+    needs: merge
     runs-on: ubuntu-latest
     container:
       image: catthehacker/ubuntu:act-latest
