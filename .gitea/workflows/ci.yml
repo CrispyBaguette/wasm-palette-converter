@@ -96,7 +96,7 @@ jobs:
 
       - name: pin
         id: pin
-        uses: docker://gitea.bruyant.xyz/alexandre/ipfs-node-pin:v1.0.0
+        uses: docker://gitea.bruyant.xyz/alexandre/ipfs-node-pin:v1.0.1
         with:
           ipfs_host: "ipfs-api.ipfs.svc"
           ipfs_port: "5001"
