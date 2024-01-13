@@ -1,5 +1,4 @@
-import { faGithub } from "@fortawesome/free-brands-svg-icons";
-import { faIgloo } from "@fortawesome/free-solid-svg-icons";
+import { faIgloo, faCodeBranch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ThemeToggler from "./ThemeToggler";
 
@@ -13,7 +12,7 @@ function Header() {
           href="https://gitea.bruyant.xyz/alexandre/PaletteSwitcher"
         >
           <FontAwesomeIcon
-            icon={faGithub}
+            icon={faCodeBranch}
             className="fa-2x hover:text-nord-7 mx-2"
           />
         </a>
