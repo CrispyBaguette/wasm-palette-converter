@@ -45,7 +45,7 @@ function App() {
       <main className="container mx-auto pb-5">
         <article className="text-xl leading-relaxed max-w-prose space-y-2 mx-auto pb-5 px-2">
           <h1 className="text-3xl text-center pb-3">
-            Go+Wasm image dithering tool
+            Palette Switcher
           </h1>
           <p>
             Load an image, select a palette, click Go and wait for the image to
