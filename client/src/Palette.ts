@@ -77,6 +77,22 @@ const dracula = new Palette("Dracula", [
   "f1fa8c",
 ]);
 
+// https://lospec.com/palette-list/ice-cream-gb
+const iceCream = new Palette("Ice Cream GB", [
+  "7c3f58",
+  "eb6b6f",
+  "f9a875",
+  "fff6d3",
+]);
+
+// https://lospec.com/palette-list/kirokaze-gameboy
+const kirokaze = new Palette("Kirokaze GameBoy", [
+  "332c50",
+  "46878f",
+  "94e344",
+  "e2f3e4",
+]);
+
 const gruvbox = new Palette("Gruvbox", [
   "1d2021",
   "282828",
@@ -126,6 +142,8 @@ const palettes = [
   grayScale2bits,
   grayScale2bitsGamma,
   dracula,
+  iceCream,
+  kirokaze,
   gruvbox,
 ];
 
