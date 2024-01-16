@@ -21,7 +21,6 @@
   "dependencies": {
     "@fortawesome/free-brands-svg-icons": "^6.5.1",
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
-    "@solid-primitives/workers": "^0.2.5",
     "@solidjs/router": "^0.10.9",
     "flowbite": "^2.2.1",
     "solid-fa": "^0.2.0",

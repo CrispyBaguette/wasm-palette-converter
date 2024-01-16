@@ -11,9 +11,6 @@ dependencies:
   '@fortawesome/free-solid-svg-icons':
     specifier: ^6.5.1
     version: 6.5.1
-  '@solid-primitives/workers':
-    specifier: ^0.2.5
-    version: 0.2.5(solid-js@1.8.11)
   '@solidjs/router':
     specifier: ^0.10.9
     version: 0.10.9(solid-js@1.8.11)
@@ -877,14 +874,6 @@ packages:
     dependencies:
       solid-js: 1.8.11
     dev: true
-
-  /@solid-primitives/workers@0.2.5(solid-js@1.8.11):
-    resolution: {integrity: sha512-oC9jLurFCPkU+QQbr0j4EyjHq8AmJunSbykIvIs5k/G+UTZ9FrqduYza9ZnK/KS9GnIIXFow648EJEsIdM/02A==}
-    peerDependencies:
-      solid-js: ^1.6.12
-    dependencies:
-      solid-js: 1.8.11
-    dev: false
 
   /@solidjs/router@0.10.9(solid-js@1.8.11):
     resolution: {integrity: sha512-TmipgAI2cU7A94fBO1MOEx7j9OYoKtddoOonSFb2221w5I1xxdjLk9W4CZDdyOVdO5z80f70KGJvNq83WFX/Qg==}
