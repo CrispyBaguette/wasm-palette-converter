@@ -9,10 +9,8 @@ const [start, stop] = createSignaledWorker({
   input: job,
   output: setImage,
   func: function process(job: Job) {
-    console.log(job);
     return "OK ?";
   },
-  concurrency: 10,
 });
 
 export { setJob, image };

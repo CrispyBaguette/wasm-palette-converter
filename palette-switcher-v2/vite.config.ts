@@ -1,5 +1,6 @@
-import { defineConfig } from 'vite';
-import solidPlugin from 'vite-plugin-solid';
+import { defineConfig } from "vite";
+import solidPlugin from "vite-plugin-solid";
+import wasm from "vite-plugin-wasm";
 // import devtools from 'solid-devtools/vite';
 
 export default defineConfig({
@@ -10,11 +11,17 @@ export default defineConfig({
     */
     // devtools(),
     solidPlugin(),
+    wasm(),
   ],
   server: {
     port: 3000,
   },
   build: {
-    target: 'esnext',
+    target: "esnext",
+  },
+  worker: {
+    // Not needed with vite-plugin-top-level-await >= 1.3.0
+    // format: "es",
+    plugins: [wasm()],
   },
 });
