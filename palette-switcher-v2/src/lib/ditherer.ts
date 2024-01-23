@@ -9,7 +9,9 @@ const [start, stop] = createSignaledWorker({
   input: job,
   output: setImage,
   func: function process(job: Job) {
-    return "OK ?";
+    console.log("Job triggered");
+
+    return job.kind;
   },
 });
 
