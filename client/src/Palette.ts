@@ -135,6 +135,14 @@ const gruvbox = new Palette("Gruvbox", [
   "af3a03",
 ]);
 
+const kanagawa = new Palette("Kanagawa", [
+  "babbbd",
+  "2e3257",
+  "627d9a",
+  "dfc5a4",
+  "fffef7"
+]);
+
 const palettes = [
   nord,
   monokai,
@@ -145,6 +153,7 @@ const palettes = [
   iceCream,
   kirokaze,
   gruvbox,
+  kanagawa,
 ];
 
 palettes.sort((a, b) => a.label.localeCompare(b.label));
