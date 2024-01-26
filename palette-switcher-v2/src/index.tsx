@@ -5,7 +5,7 @@ import "./index.css";
 import App from "./App";
 import { Router, Route } from "@solidjs/router";
 import About from "./pages/About";
-import Switcher from "./pages/Switcher";
+import Switcher from "./pages/Switcher/Switcher";
 
 const root = document.getElementById("root");
 
