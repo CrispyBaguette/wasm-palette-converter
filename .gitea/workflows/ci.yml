@@ -63,13 +63,13 @@ jobs:
       working_directory: "./client"
     steps:
       - name: Download React app
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: react-app
           path: app
 
       - name: Download WASM program
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: wasm
           path: app
@@ -89,7 +89,7 @@ jobs:
     outputs:
       cid: ${{ steps.pin.outputs.cid }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: react-app-wasm
           path: app
