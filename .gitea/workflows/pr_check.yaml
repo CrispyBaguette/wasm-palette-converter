@@ -1,0 +1,80 @@
+name: PR build
+
+on:
+  pull_request:
+
+jobs:
+  build-wasm:
+    runs-on: ubuntu-latest
+    env:
+      working_directory: "./src"
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.21
+
+      - name: Build
+        run: go build -v -o main.wasm ./...
+        working-directory: ${{env.working_directory}}
+        env:
+          GOOS: js
+          GOARCH: wasm
+
+      - name: Upload wasm file
+        uses: actions/upload-artifact@v3
+        with:
+          name: wasm
+          path: ${{env.working_directory}}/main.wasm
+
+  build-react:
+    runs-on: ubuntu-latest
+    env:
+      working_directory: "./client"
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4.1.0
+        with:
+          node-version-file: .nvmrc
+
+      - name: NPM CI
+        working-directory: ${{env.working_directory}}
+        run: npm ci
+
+      - name: React build
+        working-directory: ${{env.working_directory}}
+        run: npm run build
+
+      - name: Upload react client
+        uses: actions/upload-artifact@v3
+        with:
+          name: react-app
+          path: ${{env.working_directory}}/build
+
+  merge:
+    runs-on: ubuntu-latest
+    needs: [build-wasm, build-react]
+    env:
+      working_directory: "./client"
+    steps:
+      - name: Download React app
+        uses: actions/download-artifact@v3
+        with:
+          name: react-app
+          path: app
+
+      - name: Download WASM program
+        uses: actions/download-artifact@v3
+        with:
+          name: wasm
+          path: app
+
+      - name: Upload react app
+        uses: actions/upload-artifact@v3
+        with:
+          name: react-app-wasm
+          path: app
