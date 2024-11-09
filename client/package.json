@@ -20,7 +20,7 @@
     "react-dom": "^18.1.0",
     "react-scripts": "next",
     "typescript": "^4.6.4",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^4.0.0"
   },
   "scripts": {
     "start": "BROWSER=none react-scripts start",
