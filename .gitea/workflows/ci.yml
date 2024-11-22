@@ -25,7 +25,7 @@ jobs:
           GOARCH: wasm
 
       - name: Upload wasm file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: wasm
           path: ${{env.working_directory}}/main.wasm
@@ -51,7 +51,7 @@ jobs:
         run: npm run build
 
       - name: Upload react client
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: react-app
           path: ${{env.working_directory}}/build
@@ -63,19 +63,19 @@ jobs:
       working_directory: "./client"
     steps:
       - name: Download React app
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: react-app
           path: app
 
       - name: Download WASM program
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: wasm
           path: app
 
       - name: Upload react app
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: react-app-wasm
           path: app
@@ -89,7 +89,7 @@ jobs:
     outputs:
       cid: ${{ steps.pin.outputs.cid }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: react-app-wasm
           path: app
